@@ -1,0 +1,3 @@
+<div class="iframe-wrapper">
+    {{iframe "https://domain.tld/static/zendesk.html"}}
+</div>

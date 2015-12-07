@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Zendesk datetimepicker</title>
+</head>
+<body>
+    <script type="text/javascript" src="https://assets.zendesk.com/apps/sdk/latest/zaf_sdk.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.4.5/jquery.datetimepicker.min.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.4.5/jquery.datetimepicker.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+
+    <p>Start:</p>
+    <input id="start" type="text">
+    <br />
+    <p>End:</p>
+    <input id="end" type="text">
+
+    <script>
+        var app = window.ZAFClient.init();
+        var step = 30;
+        var round_datetime = function(datetime) {
+            return datetime.minute(Math.floor(datetime.minute() / step) * step);
+        };
+        var start = round_datetime(moment());
+        var end = start.clone().add(step, 'minutes');
+        var data = {
+            start_date: start.format('YYYY-MM-DD'),
+            start_time: start.format('HH:mm'),
+            end_date: end.format('YYYY-MM-DD'),
+            end_time: end.format('HH:mm')
+        };
+
+        $('#start').datetimepicker({
+            value: data.start_date + ' ' + data.start_time,
+            format: 'Y-m-d H:i',
+            lang: 'en',
+            step: step,
+            roundTime: 'floor',
+            mask: true,
+            onChangeDateTime: function(current_time) {
+                start = round_datetime(moment(current_time));
+                data.start_date = start.format('YYYY-MM-DD');
+                data.start_time = start.format('HH:mm');
+                this.setOptions({
+                    value: data.start_date + ' ' + data.start_time
+                });
+                app.postMessage('datetime', data);
+            }
+        });
+
+        $('#end').datetimepicker({
+            value: data.end_date + ' ' + data.end_time,
+            format: 'Y-m-d H:i',
+            lang: 'en',
+            step: step,
+            mask: true,
+            onChangeDateTime: function(current_time) {
+                end = round_datetime(moment(current_time));
+                data.end_date = end.format('YYYY-MM-DD');
+                data.end_time = end.format('HH:mm');
+                this.setOptions({
+                    value: data.end_date + ' ' + data.end_time
+                });
+                app.postMessage('datetime', data);
+            }
+        });
+
+        var update_values = function(data) {
+            $('#start').datetimepicker({
+                value: data.start_date + ' ' + data.start_time
+            });
+            $('#end').datetimepicker({
+                value: data.end_date + ' ' + data.end_time
+            });
+        };
+
+        app.on('new_ticket', function() {
+            app.postMessage('datetime', data);
+        });
+
+        app.on('datetime', function(data) {
+            update_values(data);
+        });
+    </script>
+</body>
+</html>

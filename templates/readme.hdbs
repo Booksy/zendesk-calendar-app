@@ -1,0 +1,14 @@
+<h1>Zendesk integration with Google Calendar</h1>
+<br />
+<h2>Usage</h2>
+<br />
+<p>1. Make sure you have correct timezone set in Zendesk settings (in your profile) and Google Calendar. Ideally these settings should be the same, otherwise events may seem to have wrong time in Calendar.
+<p>2. Connect your Google account with Zendesk. Just click <a href="{{oauth_url}}"><em>this link</em></a>, login to Google and give plugin permissions to accessing your calendar (simply click <em>Allow</em>).</p>
+<br />
+<p>Make sure you're signed into your business account, because this plugin can make a mess in your private calendar.</p>
+<br />
+<h2>Troubleshooting</h2>
+<br />
+<p>If something breaks, check <a href="https://security.google.com/settings/security/permissions"><em>this page</em></a> first and look for Zendesk Calendar (it should have access to yours Google calendar). If it's missing, connect Zendesk with Google again (see above).</p>
+<br />
+<p>If integration still isn't working, please contact {{author.email}} with appropriate amounts of detail.</p>
