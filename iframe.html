@@ -67,12 +67,17 @@
             }
         });
 
-        var update_values = function(data) {
+        var update_values = function(ev) {
+            var start_date = ev.start_date || data.start_date;
+            var start_time = ev.start_time || data.start_time;
+            var end_date = ev.end_date || data.end_date;
+            var end_time = ev.end_time || data.end_time;
+
             $('#start').datetimepicker({
-                value: data.start_date + ' ' + data.start_time
+                value: start_date + ' ' + start_time
             });
             $('#end').datetimepicker({
-                value: data.end_date + ' ' + data.end_time
+                value: end_date + ' ' + end_time
             });
         };
 
@@ -80,8 +85,8 @@
             app.postMessage('datetime', data);
         });
 
-        app.on('datetime', function(data) {
-            update_values(data);
+        app.on('datetime', function(ev) {
+            update_values(ev);
         });
     </script>
 </body>
