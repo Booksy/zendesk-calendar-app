@@ -9,9 +9,9 @@
         end_time: 'custom_field_24500385'
     };
 
-    var can_sync = false;
-
     return {
+        can_sync: false,
+
         events: {
             'app.activated': 'init',
             'app.registered': 'ticket_location',
@@ -39,7 +39,7 @@
 
         send_data: function() {
             // make sure the app.registered has fired
-            if(!can_sync) {
+            if(!this.can_sync) {
                 return;
             }
 
@@ -54,7 +54,7 @@
         },
 
         ticket_location: function() {
-            can_sync = true;
+            this.can_sync = true;
             // https://github.com/zendesk/zendesk_app_framework_sdk/issues/7
             var location = this.currentLocation();
             if(location === 'new_ticket_sidebar') {
